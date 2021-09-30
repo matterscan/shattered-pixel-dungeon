@@ -56,7 +56,7 @@ public class RingOfWealth extends Ring {
 		icon = ItemSpriteSheet.Icons.RING_WEALTH;
 	}
 
-	private float triesToDrop = Float.MIN_VALUE;
+	private float triesToDrop = 1f;
 	private int dropsToRare = Integer.MIN_VALUE;
 	
 	public String statsInfo() {

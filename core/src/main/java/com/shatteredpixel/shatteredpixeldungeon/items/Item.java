@@ -314,7 +314,11 @@ public class Item implements Bundlable {
 	public int level(){
 		return level;
 	}
-	
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
 	//returns the level of the item, after it may have been modified by temporary boosts/reductions
 	//note that not all item properties should care about buffs/debuffs! (e.g. str requirement)
 	public int buffedLvl(){

@@ -1,8 +1,24 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion appAndroidCompileSDK
-    compileOptions.sourceCompatibility = compileOptions.targetCompatibility = appJavaCompatibility
+    signingConfigs {
+        debug {
+            storeFile file('D:\\keys\\androidkey.jks')
+            storePassword 'chenshir'
+            keyAlias 'key0'
+            keyPassword 'chenshir'
+        }
+        release {
+            storeFile file('D:\\keys\\androidkey.jks')
+            storePassword 'chenshir'
+            keyAlias 'key0'
+            keyPassword 'chenshir'
+        }
+    }
+    compileSdkVersion 30
+    compileOptions {
+        compileOptions.sourceCompatibility compileOptions.targetCompatibility = appJavaCompatibility
+    }
 
     sourceSets.main.assets.srcDirs = [new File(project(':core').projectDir, "/src/main/assets")]
 
@@ -46,6 +62,7 @@ android {
             }
         }
     }
+    buildToolsVersion '31.0.0'
 
     sourceSets {
         main {

@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
@@ -50,6 +51,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -57,9 +62,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
@@ -84,17 +96,35 @@ public enum HeroClass {
 		hero.heroClass = this;
 		Talent.initClassTalents(hero);
 
-		Item i = new ClothArmor().identify();
-		if (!Challenges.isItemBlocked(i)) hero.belongings.armor = (ClothArmor)i;
+		Item i = new PlateArmor().identify();
+		i.setLevel(10);
+		if (!Challenges.isItemBlocked(i)) hero.belongings.armor = (PlateArmor)i;
 
 		i = new Food();
 		if (!Challenges.isItemBlocked(i)) i.collect();
+		i.collect();
+		i.collect();
+		i.collect();
+		i.collect();
+		i.collect();
+		i.collect();
 
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
 
 		Waterskin waterskin = new Waterskin();
 		waterskin.collect();
+
+		Ring ringOfForce = new RingOfWealth();
+		ringOfForce.setLevel(10);
+		ringOfForce.identify();
+		ringOfForce.collect();
+
+		Spear sai = new Spear();
+		sai.setLevel(10);
+		sai.identify();
+		sai.enchant(new Grim());
+		sai.collect();
 
 		new ScrollOfIdentify().identify();
 
@@ -144,6 +174,16 @@ public enum HeroClass {
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(3).collect();
 		Dungeon.quickslot.setSlot(0, stones);
+		RingOfForce ringOfForce = new RingOfForce();
+		ringOfForce.setLevel(4);
+		RingOfWealth ringOfWealth = new RingOfWealth();
+		ringOfWealth.setLevel(4);
+		Dungeon.quickslot.setSlot(1, ringOfForce);
+		Dungeon.quickslot.setSlot(2, ringOfWealth);
+		Ring ringOfMight = new RingOfMight();
+		ringOfMight.setLevel(4);
+		(hero.belongings.ring = ringOfMight).identify();
+		hero.belongings.ring.activate(hero);
 
 		if (hero.belongings.armor != null){
 			hero.belongings.armor.affixSeal(new BrokenSeal());
@@ -157,10 +197,13 @@ public enum HeroClass {
 		MagesStaff staff;
 
 		staff = new MagesStaff(new WandOfMagicMissile());
-
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
 
+		Ring ringOfMight = new RingOfMight();
+		ringOfMight.setLevel(10);
+		(hero.belongings.ring = ringOfMight).identify();
+		hero.belongings.ring.activate(hero);
 		Dungeon.quickslot.setSlot(0, staff);
 
 		new ScrollOfUpgrade().identify();
@@ -176,6 +219,10 @@ public enum HeroClass {
 
 		ThrowingKnife knives = new ThrowingKnife();
 		knives.quantity(3).collect();
+		Ring ringOfMight = new RingOfMight();
+		ringOfMight.setLevel(10);
+		(hero.belongings.ring = ringOfMight).identify();
+		hero.belongings.ring.activate(hero);
 
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);

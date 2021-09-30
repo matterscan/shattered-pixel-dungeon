@@ -32,7 +32,13 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+//        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven{
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+            allowInsecureProtocol = true
+        }
+
     }
+
 
 }
